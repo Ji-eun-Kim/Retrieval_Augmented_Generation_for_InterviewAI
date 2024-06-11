@@ -12,13 +12,13 @@ from langchain.vectorstores import Chroma
 
 
 os.environ["HF_HOME"] = "./cache/"
-df= pd.read_csv('/home/jieunkim/바탕화면/intern/data/IM_RAG_답변_data_최종본.csv')
+df= pd.read_csv('./IM_RAG_Ans_data.csv')
 
 
 #load and split
 columns_to_embed = df.columns.tolist()
 columns_to_metadata = df.columns.tolist()
-dir_path = '/home/jieunkim/바탕화면/intern/data/IM_RAG_답변_data_최종본.csv'
+dir_path = './IM_RAG_Ans_data.csv'
 
 docs = []
 with open(dir_path, newline="") as csvfile:
