@@ -15,7 +15,7 @@ os.environ["HF_HOME"] = "./cache/"
 df= pd.read_csv('./IM_RAG_Ans_data.csv')
 
 
-#load and split
+# Load and split
 columns_to_embed = df.columns.tolist()
 columns_to_metadata = df.columns.tolist()
 dir_path = './IM_RAG_Ans_data.csv'
@@ -36,7 +36,7 @@ splitter = RecursiveCharacterTextSplitter(
                                 length_function=len)
 documents = splitter.split_documents(docs)
 
-#DB 구축
+# Generate VectorDB
 results = {}
 model_name='google/canine-c'
 model = CanineModel.from_pretrained(model_name)
@@ -47,7 +47,7 @@ hf = HuggingFaceEmbeddings(
     model_kwargs=model_kwargs,
     encode_kwargs=encode_kwargs)
 
-#Save Disk
+# Save Disk
 vectorstore = Chroma.from_documents(documents,
                                 hf,
                                 persist_directory= f"./documents_test_db",
