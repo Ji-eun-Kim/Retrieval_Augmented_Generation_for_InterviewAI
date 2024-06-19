@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>영업직 답변 역량 평가</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+        }
+        header, footer {
+            background-color: #73c0ff;
+            color: white;
+            text-align: center;
+            padding: 5px 0;
+        }
+        .container {
+            padding: 20px;
+            margin: auto;
+            max-width: 900px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1, h2 {
+            color: #333;
+        }
+        textarea {
+            width: 97%;
+            padding: 10px;
+            margin-top: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            resize: vertical;
+
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 7px 17px;
+            border: none;
+            border-radius: 0px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .questions {
+            background-color: #f9f9f9;
+            padding: 30px;
+            border-radius: 5px;
+            margin-top: 15px;
+            box-shadow: 0 0 5px rgba(0,0,0,0.1);
+        }
+        .questions p {
+            margin: 10px 0;
+        }
+        .results {
+            background-color: #f0f8ff;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 20px; /* Add space between results sections */
+            box-shadow: 0 0 5px rgba(0,0,0,0.1);
+        }
+        .feedback {
+            margin-top: 20px; /* Add space for feedback section */
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>📝 영업직 답변 역량 평가(Beta version) 📝</h1>
+    </header>
+    <div class="container">
+        {% if text %}
+            <h2>📌 답변 내용:</h2>
+            <p>{{ text }}</p>
+        {% else %}
+        <div class="questions">
+            <h2>📌 질문 예시:</h2>
+            <p> ※ 다음은 예시 질문입니다. 영업직군으로 지원한 지원자의 입장이 되어, 질문에 대한 답변을 작성해주세요.</p>
+            <p> ※ 질문 1개 당, 하나의 답변을 작성해 제출해주세요.</p>
+            <p>1. 이전에 근무한 회사에서 의사소통을 개선하기 위해 노력한 경험이 있나요? 만약 그렇다면, 회사 내의 의사소통 문제를 인식한 계기와 실제로 어떤 방식으로 개선하려고 했는지에 대해 자세히 설명해 주실 수 있을까요?</p>
+            <p>2. 과거에 본인의 의견이 오해되었던 상황에서, 이를 해결하기 위해 특정한 피드백 수용 방식을 사용한 적이 있나요? 사용한 방식이 팀 내 의사소통에 어떤 변화를 가져왔나요?</p>
+            <p>3. 고객과의 소통 과정에서 긍정적인 분위기를 조성하여 효과적인 의사소통을 한 경험이 있다면 알려주세요. 어떻게 분위기를 조성했는지 구체적인 사례를 들어 설명해주세요.</p>
+            <p>4. 이전에 프로젝트나 제안서를 발표한 적이 있나요? 발표 전에 명확한 내용 전달을 위해 어떤 프로세스를 거쳤나요? 그것이 청자들의 이해도나 참여도에 어떤 영향을 미쳤나요?</p>
+            <p>5. 의견 교환 과정에서 특히 주의해야 할 커뮤니케이션의 요소는 무엇이라고 생각하시나요?</p>
+        </div>
+        <h2>📌 답변:</h2>
+        <form method="post" action="/submit">
+            <textarea rows="10" cols="90" id="text" name="text" required></textarea>
+            <button type="submit">제출</button>
+        </form>
+        {% endif %}
+        {% if llm_result %}
+        <div class="results">
+            <h2>1. 역량 평가 결과(only LLM ver):</h2>
+            <p>{{ llm_result | safe }}</p> 
+        </div>
+        {% endif %}
+        {% if rag_result %}
+        <div class="results">
+            <h2>2. 역량 평가 결과(RAG+LLM ver):</h2>
+            <p>{{ rag_result | safe }}</p>
+        </div>
+        <div class="feedback">
+            <form method="post" action="/feedback/{{ feedback_id }}">
+                <label for="feedback">☑️ 피드백 남기기:</label><br>
+                <textarea rows="10" cols="100" id="feedback" name="feedback"></textarea>
+                <button type="submit">제출</button>
+            </form>
+        </div>
+        {% endif %}
+    </div>
+    <footer>
+        <p>&copy; 2024 영업직 답변 역량 평가 / J2</p>
+    </footer>
+</body>
+</html>
